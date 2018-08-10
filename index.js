@@ -24,6 +24,10 @@ function createIndex (ldb, opts) {
 
     api: opts.api,
 
+    indexed: function (msgs) {
+      if (opts.indexed) opts.indexed(msgs)
+    },
+
     storeState: function (state, cb) {
       ldb.put('state', state, cb)
     },
