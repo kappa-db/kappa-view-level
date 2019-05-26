@@ -21,7 +21,7 @@ var view = View(lvl, {
   },
   
   api: {
-    get: function (key, cb) {
+    get: function (core, key, cb) {
       lvl.get(key, cb)
     }
   }
@@ -29,7 +29,7 @@ var view = View(lvl, {
 
 core.use('mapper', view)
 
-core.feed(function (err, feed) {
+core.writer(function (err, feed) {
   feed.append({key: 'foo', value: 'bar'})
   feed.append({key: 'bax', value: 'baz'})
 
