@@ -29,6 +29,7 @@ function createIndex (ldb, opts) {
     },
 
     storeState: function (state, cb) {
+      state = state.toString('base64')
       ldb.put('state', state, cb)
     },
 
@@ -36,7 +37,7 @@ function createIndex (ldb, opts) {
       ldb.get('state', function (err, state) {
         if (err && err.notFound) cb()
         else if (err) cb(err)
-        else cb(null, state)
+        else cb(null, Buffer.from(state, 'base64'))
       })
     }
   }
