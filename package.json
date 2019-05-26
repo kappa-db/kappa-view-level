@@ -16,8 +16,11 @@
   "keywords": [],
   "dependencies": {},
   "devDependencies": {
-    "tape": "~4.6.2",
-    "standard": "~10.0.0"
+    "kappa-core": "^3.0.1",
+    "memdb": "^1.3.1",
+    "random-access-memory": "^3.1.1",
+    "standard": "~10.0.0",
+    "tape": "^4.6.3"
   },
   "license": "ISC"
 }
