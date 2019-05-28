@@ -1,3 +1,6 @@
+var Writable = require('readable-stream').Writable
+var pump = require('pump')
+
 module.exports = createIndex
 
 function createIndex (ldb, opts) {
@@ -39,6 +42,28 @@ function createIndex (ldb, opts) {
         else if (err) cb(err)
         else cb(null, Buffer.from(state, 'base64'))
       })
+    },
+
+    clearIndex: opts.clearIndex || function (cb) {
+      var batch = []
+      var maxSize = 5000
+      pump(ldb.createKeyStream(), new Writable({
+        objectMode: true,
+        write: function (key, enc, next) {
+          batch.push({ type: 'del', key })
+          if (batch.length >= maxSize) {
+            ldb.batch(batch, next)
+          } else next()
+        },
+        final: function (next) {
+          if (batch.length > 0) ldb.batch(batch, next)
+          else next()
+        }
+      }), ondone)
+      function ondone (err) {
+        if (err) cb(err)
+        else cb()
+      }
     }
   }
 }
