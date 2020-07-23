@@ -24,9 +24,9 @@ function createIndex (ldb, opts) {
           done()
         })
         function done () {
-           if (pending === 0) {
-               ldb.batch(ops, next)
-           }
+          if (pending === 0) {
+            ldb.batch(ops, next)
+          }
         }
       },
 
