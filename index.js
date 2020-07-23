@@ -7,8 +7,9 @@ function createIndex (ldb, opts) {
     return {
       map: function (msgs, next) {
         var ops = []
-        msgs.forEach(function (msg) {
-          var res = opts.map(msg)
+        let pending = msgs.length
+        msgs.forEach(async function (msg) {
+          var res = await opts.map(msg)
           if (res && Array.isArray(res)) {
             res = res.map(function (r) {
               return {
@@ -19,8 +20,14 @@ function createIndex (ldb, opts) {
             })
             ops.push.apply(ops, res)
           }
+          pending--
+          done()
         })
-        ldb.batch(ops, next)
+        function done () {
+           if (pending === 0) {
+               ldb.batch(ops, next)
+           }
+        }
       },
 
       api: opts.api,
