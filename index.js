@@ -7,6 +7,7 @@ function createIndex (ldb, opts) {
     return {
       map: function (msgs, next) {
         var ops = []
+        if (!msgs.length) return next()
         let pending = msgs.length
         msgs.forEach(async function (msg) {
           var res = await opts.map(msg)
